@@ -16,7 +16,7 @@ public class MyClass {
                 String urlParameters = "param1=a&param2=b&param3=c";
                 byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
                 int postDataLength = postData.length;
-                String request = "http://localhost:8080/login";
+                String request = "http://localhost:8080/login";;
                 try
                 {
                     HttpURLConnection connection = (HttpURLConnection) new URL(request).openConnection();
