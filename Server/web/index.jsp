@@ -11,6 +11,10 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$
+  <script>
+    var a = new XMLHttpRequest();
+    a.open('POST', 'http://localhost:8080/login', true);
+    a.send("Hello, World");
+  </script>
   </body>
 </html>
