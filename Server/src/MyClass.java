@@ -12,4 +12,9 @@ public class MyClass extends HttpServlet {
         System.out.println(json);
         System.out.println(req.toString());
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(req.toString());
+    }
 }
