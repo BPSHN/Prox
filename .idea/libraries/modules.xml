@@ -8,6 +8,9 @@
     <SOURCES>
       <root url="file://C:/glassfish4/glassfish/modules" />
     </SOURCES>
+    <excluded>
+      <root url="jar://C:/Program Files/PostgreSQL/postgresql-9.4.1211.jar!/" />
+    </excluded>
     <jarDirectory url="file://C:/glassfish4/glassfish/modules" recursive="false" />
     <jarDirectory url="file://C:/glassfish4/glassfish/modules" recursive="false" type="SOURCES" />
   </library>
