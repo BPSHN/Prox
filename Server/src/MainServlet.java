@@ -13,7 +13,7 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Report report; // Этот отчет мы будем отправлять клиенту
+        Report report = new Report(); // Этот отчет мы будем отправлять клиенту
         if(!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков
         {
 
@@ -21,9 +21,10 @@ public class MainServlet extends HttpServlet {
         }
         SubSystemBDInt subSystemBD = SubSystemBD.getInstance(); // Доступ к базе данных
         Contact contact = new Contact();
-        contact.login = "Tony_Puker";
+        contact.login = "Tony_Puk";
         String password = "asd";
-        report = subSystemBD.registration(contact, password);
+        report = subSystemBD.auth(contact, password, req, resp, null);
+        //report = subSystemBD.registration(contact, password);
         System.out.println(report.type);
     }
 
