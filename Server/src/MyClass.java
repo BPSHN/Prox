@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.*;
 
 public class MyClass extends HttpServlet {
 
