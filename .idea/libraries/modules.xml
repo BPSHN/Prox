@@ -2,6 +2,7 @@
   <library name="modules">
     <CLASSES>
       <root url="file://C:/glassfish4/glassfish/modules" />
+      <root url="jar://C:/Program Files/PostgreSQL/postgresql-9.4.1211.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
