@@ -12,9 +12,8 @@
   </head>
   <body>
   <script>
-    var a = new XMLHttpRequest();
-    a.open('POST', 'http://localhost:8080/login', true);
-    a.send("Hello, World");
+
   </script>
+    Hello, i am server
   </body>
 </html>

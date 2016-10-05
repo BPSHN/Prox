@@ -11,15 +11,20 @@ import java.sql.*;
 
 public class MainServlet extends HttpServlet {
 
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Report report; // Этот отчет мы будем отправлять клиенту
+        if(!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков
+        {
 
+
+        }
+        SubSystemBDInt subSystemBD = SubSystemBD.getInstance(); // Доступ к базе данных
+        Contact contact = new Contact();
+        contact.login = "Tony_Puker";
+        String password = "asd";
+        report = subSystemBD.registration(contact, password);
+        System.out.println(report.type);
     }
 
     @Override

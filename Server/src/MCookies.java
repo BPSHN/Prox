@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MCookies {
 
-    public boolean isCorUser;
+    public boolean isCorUser = false;
 
 
-    static private MCookies checkCookies(HttpServletRequest req, HttpServletResponse resp)
+    static public MCookies checkCookies(HttpServletRequest req, HttpServletResponse resp)
     {
         MCookies mCookies = new MCookies();
 
