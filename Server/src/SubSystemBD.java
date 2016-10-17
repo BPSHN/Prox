@@ -7,13 +7,14 @@ import java.sql.*;
  * Created by Android on 05.10.2016.
  */
 public class SubSystemBD implements SubSystemBDInt {
-
-    private Connection DB;
+// Сеанс работы с БД
+    private Connection DB; // Класс java.sql.Connection представляет в JDBC сеанс работы с базой данных.
 
     static SubSystemBDInt instance = null;
     private SubSystemBD()
     {
         try {
+            //Загружаем драйвер
             Class.forName("org.postgresql.Driver");
             System.out.println("Драйвер подключен");
             DB = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres",
