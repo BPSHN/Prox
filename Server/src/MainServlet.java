@@ -22,10 +22,13 @@ public class MainServlet extends HttpServlet {
         SubSystemBDInt subSystemBD = SubSystemBD.getInstance(); // Доступ к базе данных
         Contact contact = new Contact();
         contact.login = "Tony_Puk";
+        contact.name = "Misha_Puk";
         String password = "asd";
         report = subSystemBD.auth(contact, password, req, resp, null);
         //report = subSystemBD.registration(contact, password);
         System.out.println(report.type);
+        System.out.println(JSONCoder.encode(contact));
+        System.out.println(JSONCoder.encode((Contact) JSONCoder.decode(JSONCoder.encode(contact), 2)));
     }
 
     @Override
