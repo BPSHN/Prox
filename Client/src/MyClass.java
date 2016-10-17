@@ -18,7 +18,7 @@ public class MyClass {
                 byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
                 int postDataLength = postData.length;
                 String request = "http://localhost:8080/login";;
-                try
+                try //
                 {
                     HttpURLConnection connection = (HttpURLConnection) new URL(request).openConnection();
                     connection.setRequestMethod("POST");
