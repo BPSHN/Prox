@@ -16,7 +16,7 @@ public class MainServlet extends HttpServlet {
         Report report = new Report(); // Этот отчет мы будем отправлять клиенту
         if(!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков
         {
-            //wqwe
+            //хе-хе-хе
 
         }
         SubSystemBDInt subSystemBD = SubSystemBD.getInstance(); // Доступ к базе данных
