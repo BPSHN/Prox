@@ -113,7 +113,7 @@ public class SubSystemBD implements SubSystemBDInt {
     }
     public Report addContact(Contact contact, String from_user)//Добавить контакт
     {
-        // Либо такого нет, либо да, он есть
+        System.out.println("Получилось!!!");// Либо такого нет, либо да, он есть
         return null;
     }
     public Report addMessage(Message message, String from_user) //Добавить сообщение

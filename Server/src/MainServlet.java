@@ -35,12 +35,12 @@ public class MainServlet extends HttpServlet {
         ////
         Report report = new Report(); // Этот отчет мы будем отправлять клиенту
         SubSystemBDInt subSystemBD = SubSystemBD.getInstance(); // Доступ к базе данных
-        if (!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков, при авторизации и регистрации false
-        {
-            User_Login = subSystemBD.getUserLoginByID((String)req.getSession().getId());
-            if(User_Login == null)
-                return;
-        }
+        //if (!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков, при авторизации и регистрации false
+        //{
+        User_Login = subSystemBD.getUserLoginByID((String)req.getSession().getId());
+         //   if(User_Login == null)
+         //       return;
+        //}
         if (jsonStr != null || jsonStr != "")
         {
             report = JSONCoder.decode(jsonStr);
