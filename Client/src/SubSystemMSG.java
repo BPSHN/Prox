@@ -10,9 +10,12 @@ public class SubSystemMSG implements SubSystemMSGInterface{
     @Override
     public void addContact(Contact contact, ReportListener reportListener) {
         String string = JSONCoder.encode(contact); //получили JSON-строку контакта
-
+        Report report = new Report();
+        report.data = string;
+        report.type = 2;
         try //
         {
+
             URL url = new URL("http://localhost:8080/login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             System.out.println("Метод запроса: " +
@@ -28,7 +31,6 @@ public class SubSystemMSG implements SubSystemMSGInterface{
             //System.out.println(string);
             System.out.println("Код ошибки : " + responseCode);
             System.out.println("Контакт : " + string);
-
 
         }
         catch (Exception e) {}
