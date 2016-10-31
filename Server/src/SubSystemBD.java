@@ -111,4 +111,39 @@ public class SubSystemBD implements SubSystemBDInt {
         }
         return report;
     }
+    public Report addContact(Contact contact, String from_user)//Добавить контакт
+    {
+        // Либо такого нет, либо да, он есть
+        return null;
+    }
+    public Report addMessage(Message message, String from_user) //Добавить сообщение
+    {
+
+        return null;
+    }
+    public Report delContact(Contact contact, String from_user) // Удаление контакта конкретного пользователя
+    {
+        return null;
+    }
+    public String getUserLoginByID(String id)
+    {
+        String login;
+        String checkSqlReq = "select login from users_table where sessio_id = ?";
+        try {
+            PreparedStatement reqBD = DB.prepareStatement(checkSqlReq);
+            reqBD.setString(1, id);
+            if (!reqBD.execute())
+                login = null;
+            else {
+                ResultSet s = reqBD.getResultSet();
+                s.next();
+                login = s.getString("login");
+            }
+        }catch(SQLException e) {
+            System.out.println(e.toString());
+            login = null;
+            return null;
+        }
+        return login;
+    }
 }
