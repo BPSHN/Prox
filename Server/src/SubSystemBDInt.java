@@ -8,6 +8,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface SubSystemBDInt {
 
-    Report registration(Contact contact, String password);
-    Report auth(Contact contact, String password, HttpServletRequest req, HttpServletResponse resp, String address);
+    Report registration(Contact contact, String password); // Регистрация
+    Report auth(Contact contact, String password, HttpServletRequest req, HttpServletResponse resp, String address); // Авторзация
 }
