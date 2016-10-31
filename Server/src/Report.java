@@ -15,6 +15,8 @@ public class Report {
     // TYPE
     static final int MESSAGE = 1; // Сообщение
     static final int CONTACT = 2; // Контакт
+    static final int REGISTATION = 30; // Запрос регистрации
+    static final int AUTHORISATION = 31; // Запрос авторизации
 
     public int type;
     public Object data;
