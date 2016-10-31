@@ -22,6 +22,7 @@ public class JSONCoder {
                 Contact contact = new Contact();
                 contact.login = (String) jsonObj.get("login");
                 contact.name = (String) jsonObj.get("name");
+                contact.password = (String) jsonObj.get("password");
                 return contact;
             }
         } catch (Exception e) {
@@ -64,6 +65,7 @@ public class JSONCoder {
         JSONObject resultJson = new JSONObject();
         resultJson.put("login", contact.login);
         resultJson.put("name", contact.name);
+        resultJson.put("password", contact.password);
         return resultJson.toJSONString();
     }
     public static String encode(Report report)

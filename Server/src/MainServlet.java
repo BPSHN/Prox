@@ -28,34 +28,37 @@ public class MainServlet extends HttpServlet {
         String jsonStr = new String(jsonC, "UTF-8");
         // !!!
         // ЗАГЛУШКА
-        Contact contact = new Contact();
-        contact.login = "Tony_Puk";
-        contact.name = "Misha_Puk";
-        String password = "asd";
+        //////////////Contact contact = new Contact();
+        //////////////contact.login = "Tony_Puk";
+        //////////////contact.name = "Misha_Puk";
+        //////////////String password = "asd";
         ////
+        Report report = new Report(); // Этот отчет мы будем отправлять клиенту
         SubSystemBDInt subSystemBD = SubSystemBD.getInstance(); // Доступ к базе данных
         if (!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков, при авторизации и регистрации false
         {
             User_Login = subSystemBD.getUserLoginByID((String)req.getSession().getId());
+            if(User_Login == null)
+                return;
         }
         if (jsonStr != null || jsonStr != "")
         {
-                Report report = new Report(); // Этот отчет мы будем отправлять клиенту
-                report = JSONCoder.decode(jsonStr);
-                switch (report.type) {
-                    case 1: // Пришло сообщение
-                        report = subSystemBD.addMessage((Message)report.data, User_Login);
-                        break;
-                    case 2: // Добавление контакта
-                        report = subSystemBD.addContact((Contact)report.data, User_Login);
-                        break;
-                    case 30: // Регистрация
-                        report = subSystemBD.registration(contact, password);
-                        break;
-                    case 31: // Авторизация
-                        report = subSystemBD.registration(contact, password);
-                        break;
-                }
+            report = JSONCoder.decode(jsonStr);
+            switch (report.type) {
+            case 1: // Пришло сообщение
+                report = subSystemBD.addMessage((Message)report.data, User_Login);
+                break;
+            case 2: // Добавление контакта
+                report = subSystemBD.addContact((Contact)report.data, User_Login);
+                break;
+            case 30: // Регистрация
+                report = subSystemBD.registration((Contact)report.data);
+                break;
+            case 31: // Авторизация
+                report = subSystemBD.registration((Contact)report.data);
+                break;
+            }
+            System.out.println(report.type);
         }
 
 

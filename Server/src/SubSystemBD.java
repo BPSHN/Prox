@@ -35,7 +35,7 @@ public class SubSystemBD implements SubSystemBDInt {
     }
 
     @Override
-    public Report registration(Contact contact, String password) {
+    public Report registration(Contact contact) {
         // Проверка, сущестует ли пользователь с таким логином
         Report report = new Report();
         String checkSqlReq = "select count(case when U.login = ? then 1 else null end) from users_table as U";
@@ -55,7 +55,7 @@ public class SubSystemBD implements SubSystemBDInt {
             }
             reqBD = DB.prepareStatement(sqlReq);
             reqBD.setString(1, contact.login);
-            reqBD.setString(2, password);
+            reqBD.setString(2, contact.password);
             reqBD.setString(3, contact.name);
             report.type = Report.SUCCESSFUL_SQL;
         } catch (SQLException e) {
@@ -67,16 +67,16 @@ public class SubSystemBD implements SubSystemBDInt {
     }
 
     @Override
-    public Report auth(Contact contact, String password, HttpServletRequest req, HttpServletResponse resp, String address){
+    public Report auth(Contact contact, HttpServletRequest req, HttpServletResponse resp, String address){
         Report report = new Report();
         if(!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков
         {
-            if((contact.login != null || contact.login != "") || (password != null || password != "")) {
+            if((contact.login != null || contact.login != "") || (contact.password != null || contact.password != "")) {
                 String checkSqlReq = "select count(case when U.login = ? and U.password = ? then 1 else null end) from users_table as U";
                 try {
                     PreparedStatement reqBD = DB.prepareStatement(checkSqlReq);
                     reqBD.setString(1, contact.login);
-                    reqBD.setString(2, password);
+                    reqBD.setString(2, contact.password);
                     if (!reqBD.execute())
                         report.type = Report.SQL_EXCEPTION;
                     else
