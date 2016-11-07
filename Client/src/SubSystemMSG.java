@@ -1,4 +1,6 @@
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -16,6 +18,8 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         report.data = string;
         report.type = 2;
         String stringReport = JSONCoder.encode(report);
+        InputStream is = null;
+        byte[] data = null;
 
         try //
         {
@@ -39,9 +43,24 @@ public class SubSystemMSG implements SubSystemMSGInterface{
             wr.close();
             OutputStream outputStream = connection.getOutputStream();
 
+            //Прослушка ответа+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            is = connection.getInputStream();
+
+            byte[] buffer = new byte[8192]; // Такого вот размера буфер
+            // Далее, например, вот так читаем ответ
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytesRead);
+            }
+            data = baos.toByteArray();
+            String str = new String(data, "UTF-8");
+            //-Прослушка ответа
+
             int responseCode = connection.getResponseCode();
             System.out.println("Код ошибки : " + responseCode);
             System.out.println("Строка : " + stringReport);
+            System.out.println("data : " + str);
 
         }
         catch (Exception e) {}
