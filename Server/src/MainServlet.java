@@ -26,6 +26,7 @@ public class MainServlet extends HttpServlet {
         byte[] jsonC = new byte[contentLength]; //
         sin.read(jsonC, 0, contentLength);
         String jsonStr = new String(jsonC, "UTF-8");
+        sin.close();
         // !!!
         // ЗАГЛУШКА
         //////////////Contact contact = new Contact();
@@ -37,7 +38,7 @@ public class MainServlet extends HttpServlet {
         SubSystemBDInt subSystemBD = SubSystemBD.getInstance(); // Доступ к базе данных
         //if (!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков, при авторизации и регистрации false
         //{
-        User_Login = subSystemBD.getUserLoginByID((String)req.getSession().getId());
+        ///////User_Login = subSystemBD.getUserLoginByID((String)req.getSession().getId()); /// ЗДЕСЬ ПРОДЕБАЖ!
          //   if(User_Login == null)
          //       return;
         //}
@@ -60,8 +61,10 @@ public class MainServlet extends HttpServlet {
             }
             System.out.println(report.type);
         }
-
-
+        // System.out.println(jsonObject.toJSONString());
+        sout.write(JSONCoder.encode(report).getBytes("UTF-8"));
+        resp.setStatus(200);
+        sout.close();
         //report = subSystemBD.auth(contact, password, req, resp, null);
         //report = subSystemBD.registration(contact, password);
         //System.out.println(report.type);

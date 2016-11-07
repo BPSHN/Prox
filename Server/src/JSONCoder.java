@@ -9,16 +9,16 @@ public class JSONCoder {
         try {
             Object obj = parser.parse(string);
             jsonObj = (JSONObject) obj;
-            if (t == 1) {
+            if (t == Report.MESSAGE) {
                 Message message = new Message();
                 message.date = (String) jsonObj.get("date");
                 message.text = (String) jsonObj.get("text");
                 message.time = (String) jsonObj.get("time");
                 String a = (String) jsonObj.get("contact");
-                message.contact = (Contact) decode(a, 2);
+                message.contact = (Contact) decode(a, Report.CONTACT);
                 return message;
             }
-            if (t == 2) {
+            if (t == Report.CONTACT) {
                 Contact contact = new Contact();
                 contact.login = (String) jsonObj.get("login");
                 contact.name = (String) jsonObj.get("name");
@@ -32,17 +32,18 @@ public class JSONCoder {
     }
     public static Report decode(String string)
     {
-        JSONObject jsonObj;
-        JSONParser parser = new JSONParser();
+        //JSONObject jsonObj;
+        //JSONParser parser = new JSONParser();
         Report report = new Report();
         try {
-            Object obj = parser.parse(string);
-            jsonObj = (JSONObject) obj;
-            report.type = (int) jsonObj.get("type");
+            JSONObject jsonObj = (JSONObject) JSONValue.parseWithException(string);//parser.parse(string);
+            //report.type =
+            long a = (long) jsonObj.get("type");
+            report.type = (int) a;
             String d = (String) jsonObj.get("data");
-            if(report.type == 1)
+            if(report.type == Report.MESSAGE)
                 report.data = (Message) decode(d, report.type);
-            if(report.type == 2)
+            if(report.type == Report.CONTACT)
                 report.data = (Contact) decode(d, report.type);
         }
         catch(Exception e) {
