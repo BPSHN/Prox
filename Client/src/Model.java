@@ -26,10 +26,15 @@ public class Model implements ModelOnClientInterface {
                 }
             }
         };
-        //Новый поток+
-
-        subSystemMSG.addContact(contact,reportListener);
-        //-Новый поток
+        //Создание потока
+        Thread myThready = new Thread(new Runnable()
+        {
+            public void run() //Этот метод будет выполняться в побочном потоке
+            {
+                subSystemMSG.addContact(contact,reportListener);
+            }
+        });
+        myThready.start();	//Запуск потока
     }
 
     @Override
