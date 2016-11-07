@@ -6,10 +6,30 @@ public class Model implements ModelOnClientInterface {
     RegistrationListener registrationListener;
     GetListDialogListener getListDialogListener;
     GetListContactListener getListContactListener;
+    AddContactListener addContactListener;
+    SubSystemMSG subSystemMSG;
+    public Model (){
+        subSystemMSG = new SubSystemMSG();
+    }
 
     @Override
-    public void findContact(Contact contact) {
+    public void addContact(Contact contact) {
+        ReportListener reportListener = new ReportListener() {
+            @Override
+            public void handler(Report report) {
+                if (report.type == Report.NOT_FIND_CONTACT){ //если не нашел контакт
+                    addContactListener.handlerEvent(null);
+                }
+                if (report.type == Report.FIND_CONTACT){ //если нашел контакт
+                    Contact contact = (Contact) report.data;
+                    addContactListener.handlerEvent(contact);
+                }
+            }
+        };
+        //Новый поток+
 
+        subSystemMSG.addContact(contact,reportListener);
+        //-Новый поток
     }
 
     @Override
@@ -45,6 +65,11 @@ public class Model implements ModelOnClientInterface {
     @Override
     public void regGetListDialogListener(GetListDialogListener listener) {
         getListDialogListener = listener;
+    }
+
+    @Override
+    public void regAddContactListener(AddContactListener listener) {
+        addContactListener = listener;
     }
 
     @Override

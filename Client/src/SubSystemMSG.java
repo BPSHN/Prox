@@ -19,7 +19,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         report.type = 2; //
         String stringReport = JSONCoder.encode(report);
         InputStream is = null;
-        byte[] data = null;
+        byte[] answerData = null;
 
         try //
         {
@@ -47,20 +47,23 @@ public class SubSystemMSG implements SubSystemMSGInterface{
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             is = connection.getInputStream();
 
-            byte[] buffer = new byte[8192]; // Такого вот размера буфер
-            // Далее, например, вот так читаем ответ
+            byte[] buffer = new byte[8192]; // Задаем размер буфера
+            // Далее читаем ответ
             int bytesRead;
             while ((bytesRead = is.read(buffer)) != -1) {
                 baos.write(buffer, 0, bytesRead);
             }
-            data = baos.toByteArray();
-            String str = new String(data, "UTF-8");
+            answerData = baos.toByteArray();
+            String JSONstr = new String(answerData, "UTF-8");
+            Report answerReport = JSONCoder.decode(JSONstr);
+            //int answerCode = answerReport.type;
+            reportListener.handler(answerReport);
             //-Прослушка ответа
 
             int responseCode = connection.getResponseCode();
             System.out.println("Код ошибки : " + responseCode);
             System.out.println("Строка : " + stringReport);
-            System.out.println("data : " + str);
+            System.out.println("Строка : " + JSONstr);
 
         }
         catch (Exception e) {}
