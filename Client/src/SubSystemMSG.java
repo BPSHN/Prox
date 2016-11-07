@@ -16,7 +16,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         String string = JSONCoder.encode(contact); //получили JSON-строку контакта
         Report report = new Report();
         report.data = string;
-        report.type = 2;
+        report.type = 2; //
         String stringReport = JSONCoder.encode(report);
         InputStream is = null;
         byte[] data = null;
