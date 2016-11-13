@@ -53,8 +53,28 @@ public class Model implements ModelOnClientInterface {
     }
 
     @Override
-    public void registration(Contact contact, String password) {
-
+    public void registration(Contact contact) {
+        ReportListener reportListener = new ReportListener() {
+            @Override
+            public void handler(Report report) {
+                if (report.type == Report.NOT_FIND_CONTACT){ //Вставить обруботку вариантов ответа от сервера
+                    registrationListener.handlerEvent(null);
+                }
+                if (report.type == Report.FIND_CONTACT){ //Вставить обруботку вариантов ответа от сервера
+                    Contact contact = (Contact) report.data;
+                    registrationListener.handlerEvent(contact);
+                }
+            }
+        };
+        //Создание потока
+        Thread myThready = new Thread(new Runnable()
+        {
+            public void run() //Этот метод будет выполняться в побочном потоке
+            {
+                subSystemMSG.registrarion(contact,reportListener);
+            }
+        });
+        myThready.start();	//Запуск потока
     }
 
     @Override

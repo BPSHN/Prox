@@ -6,7 +6,7 @@ public interface ModelOnClientInterface {
     void getListContact();
     void getListDialog(Contact contact);
     void loginMe(String login,String password);
-    void registration(Contact contact, String password);
+    void registration(Contact contact);
     void sendMessage(Message message);
     void regGetListContactListener(GetListContactListener listener);
     void regGetListDialogListener(GetListDialogListener listener);

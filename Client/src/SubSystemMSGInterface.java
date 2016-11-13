@@ -6,7 +6,7 @@ public interface SubSystemMSGInterface {
     void auth(Contact contact, ReportListener reportListener, String string);
     void delContact(Contact contact, ReportListener reportListener);
     void findContact(Contact contact, ReportListener reportListener, int I1, int I2);
-    void registrarion(Contact contact, ReportListener reportListener, String string);
+    void registrarion(Contact contact, ReportListener reportListener);
     void registrListener(ReportListener reportListener);
     void sendMessage(Message message, ReportListener reportListener);
 }
