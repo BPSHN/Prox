@@ -80,7 +80,7 @@ public class Model implements ModelOnClientInterface {
         {
             public void run() //Этот метод будет выполняться в побочном потоке
             {
-                subSystemMSG.registrarion(contact,reportListener);
+                subSystemMSG.registration(contact,reportListener);
             }
         });
         myThready.start();	//Запуск потока
@@ -110,4 +110,7 @@ public class Model implements ModelOnClientInterface {
     public void regRegistrationListener(RegistrationListener listener) {
         registrationListener = listener;
     }
+
+    @Override
+    public void regLoginMeListener(LoginMeListener listener) {loginMeListener = listener; }
 }
