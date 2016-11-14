@@ -22,8 +22,8 @@ public class TEST {
                 }
             };
             //model.addContact(contact);
-            model.registration((Contact) contact);
-
+            //model.registration((Contact) contact);
+            model.loginMe("123","123");
             //subSystemMSG.addContact((Contact) contact, reportListener);
     }
 }

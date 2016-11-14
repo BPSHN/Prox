@@ -110,4 +110,7 @@ public class Model implements ModelOnClientInterface {
     public void regRegistrationListener(RegistrationListener listener) {
         registrationListener = listener;
     }
+
+    @Override
+    public void regLoginMeListener(LoginMeListener listener) {loginMeListener = listener; }
 }
