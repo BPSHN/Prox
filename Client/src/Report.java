@@ -10,7 +10,7 @@ public class Report {
     static final int COOKIE_FAIL = 604; // Ошибка: У пользователя нет куков или они не верны
     static final int JSON_DECODE_FAIL = 605; // Ошибка декодирования json
     static final int SUCCESSFUL_SQL = 200;
-    static final int SUCCESSFUL_AUTH = 201; // Удачная авторизация
+
 
     // TYPE
     static final int MESSAGE = 1; // Сообщение
@@ -20,6 +20,9 @@ public class Report {
     // Ответ сервера
     static final int FIND_CONTACT = 15;
     static final int NOT_FIND_CONTACT = 16;
+    static final int SUCCESSFUL_REG = 17; // Удачная регитрация
+    static final int SUCCESSFUL_AUTH = 18; // Удачная авторизация
+
     public int type;
     public Object data;
 }
