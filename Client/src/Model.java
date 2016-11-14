@@ -4,6 +4,7 @@
 public class Model implements ModelOnClientInterface {
 
     RegistrationListener registrationListener;
+    LoginMeListener loginMeListener;
     GetListDialogListener getListDialogListener;
     GetListContactListener getListContactListener;
     AddContactListener addContactListener;
@@ -49,7 +50,21 @@ public class Model implements ModelOnClientInterface {
 
     @Override
     public void loginMe(String login, String password) {
-
+        ReportListener reportListener = new ReportListener() {
+            @Override
+            public void handler(Report report) {
+                loginMeListener.handlerEvent(report.type);
+            }
+        };
+        //Создание потока
+        Thread myThready = new Thread(new Runnable()
+        {
+            public void run() //Этот метод будет выполняться в побочном потоке
+            {
+                subSystemMSG.loginMe(login,password,reportListener);
+            }
+        });
+        myThready.start();	//Запуск потока
     }
 
     @Override
@@ -57,13 +72,7 @@ public class Model implements ModelOnClientInterface {
         ReportListener reportListener = new ReportListener() {
             @Override
             public void handler(Report report) {
-                if (report.type == Report.NOT_FIND_CONTACT){ //Вставить обруботку вариантов ответа от сервера
-                    registrationListener.handlerEvent(null);
-                }
-                if (report.type == Report.FIND_CONTACT){ //Вставить обруботку вариантов ответа от сервера
-                    Contact contact = (Contact) report.data;
-                    registrationListener.handlerEvent(contact);
-                }
+                registrationListener.handlerEvent(report.type);
             }
         };
         //Создание потока
