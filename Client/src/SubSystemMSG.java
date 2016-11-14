@@ -27,7 +27,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         try //
         {
 
-            URL url = new URL("http://localhost:8080/login");
+            URL url = new URL("http://25.19.168.170:8080/login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             System.out.println("Метод запроса: " +
@@ -83,7 +83,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         try //
         {
 
-            URL url = new URL("http://localhost:8080/login");
+            URL url = new URL("http://25.19.168.170:8080/login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             System.out.println("Метод запроса: " +
@@ -153,7 +153,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         try //
         {
 
-            URL url = new URL("http://localhost:8080/login");
+            URL url = new URL("http://25.19.168.170:8080/login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             System.out.println("Метод запроса: " +
