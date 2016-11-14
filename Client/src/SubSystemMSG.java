@@ -125,10 +125,10 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         catch (Exception e) {}
     }
 
-    @Override
-    public void auth(Contact contact, ReportListener reportListener, String string) {
+    //@Override
+    //public void auth(Contact contact, ReportListener reportListener, String string) {
 
-    }
+    //}
 
     @Override
     public void delContact(Contact contact, ReportListener reportListener) {
