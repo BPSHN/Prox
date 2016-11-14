@@ -2,8 +2,8 @@
  * Created by IHaveSomeCookies on 17.10.2016.
  */
 public interface SubSystemMSGInterface {
-    void addContact(Contact contact, ReportListener reportListener);
-    void auth(Contact contact, ReportListener reportListener, String string);
+    void addContact(Contact contact, ReportListener reportListener);//+
+    //void auth(Contact contact, ReportListener reportListener, String string);
     void delContact(Contact contact, ReportListener reportListener);
     void findContact(Contact contact, ReportListener reportListener, int I1, int I2);
     void registration(Contact contact, ReportListener reportListener);
