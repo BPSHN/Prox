@@ -184,14 +184,12 @@ public class SubSystemMSG implements SubSystemMSGInterface{
             String JSONstr = new String(answerData, "UTF-8");
             Report answerReport = JSONCoder.decode(JSONstr);
             //int answerCode = answerReport.type;
-            reportListener.handler(answerReport);
-            //-Прослушка ответа
-
             int responseCode = connection.getResponseCode();
             System.out.println("Код ошибки : " + responseCode);
             System.out.println("Строка : " + stringReport);
             System.out.println("Строка : " + JSONstr);
-
+            reportListener.handler(answerReport);
+            //-Прослушка ответа
         }
         catch (Exception e) {}
     }
