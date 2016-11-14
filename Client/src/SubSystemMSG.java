@@ -142,7 +142,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
     }
 
     @Override
-    public void registrarion(Contact contact, ReportListener reportListener) {
+    public void registration(Contact contact, ReportListener reportListener) {
         String string = JSONCoder.encode(contact); //получили JSON-строку контакта
         Report report = new Report();
         report.data = string;

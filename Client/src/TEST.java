@@ -9,16 +9,21 @@ public class TEST {
     public static void main(String[] args) {
             Contact contact = new Contact();
             String login = "123";
-            String name = "123";
+            String name = "Super_Duper";
             contact.login = login;
             contact.name = name;
+            contact.password = "123";
             SubSystemMSG subSystemMSG = new SubSystemMSG();
+            Model model = new Model();
             ReportListener reportListener = new ReportListener() {
                 @Override
                 public void handler(Report report) {
 
                 }
             };
-            subSystemMSG.addContact((Contact) contact, reportListener);
+            //model.addContact(contact);
+            model.registration((Contact) contact);
+
+            //subSystemMSG.addContact((Contact) contact, reportListener);
     }
 }
