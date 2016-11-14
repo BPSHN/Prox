@@ -38,6 +38,7 @@ public class SubSystemBD implements SubSystemBDInt {
     public Report registration(Contact contact) {
         // Проверка, сущестует ли пользователь с таким логином
         Report report = new Report();
+        report.data = contact;
         String checkSqlReq = "select count(case when U.login = ? then 1 else null end) from users_table as U";
         String sqlReq = "insert into users_table (login, password, name) values (?, ?, ?)";
         try {
@@ -57,7 +58,8 @@ public class SubSystemBD implements SubSystemBDInt {
             reqBD.setString(1, contact.login);
             reqBD.setString(2, contact.password);
             reqBD.setString(3, contact.name);
-            report.type = Report.SUCCESSFUL_SQL;
+            reqBD.execute();
+            report.type = Report.SUCCESSFUL_REG;//SUCCESSFUL_SQL;
         } catch (SQLException e) {
             System.out.println(e.toString());
             report.type = Report.SQL_EXCEPTION;

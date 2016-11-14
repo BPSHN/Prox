@@ -56,7 +56,7 @@ public class MainServlet extends HttpServlet {
                 report = subSystemBD.registration((Contact)report.data);
                 break;
             case 31: // Авторизация
-                report = subSystemBD.registration((Contact)report.data);
+                report = subSystemBD.auth((Contact)report.data, req, resp, null);
                 break;
             }
             System.out.println(report.type);
