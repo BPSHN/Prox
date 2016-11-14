@@ -13,7 +13,12 @@ public class TEST {
             contact.login = login;
             contact.name = name;
             SubSystemMSG subSystemMSG = new SubSystemMSG();
-            ReportListener reportListener = new ReportListener();
+            ReportListener reportListener = new ReportListener() {
+                @Override
+                public void handler(Report report) {
+
+                }
+            };
             subSystemMSG.addContact((Contact) contact, reportListener);
     }
 }
