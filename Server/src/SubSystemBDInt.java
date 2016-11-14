@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface SubSystemBDInt {
 
-    Report registration(Contact contact); // Регистрация
+    Report registration(Contact contact); // Регистрация ++++++++++
     Report auth(Contact contact, HttpServletRequest req, HttpServletResponse resp, String address); // Авторзация
     Report addContact(Contact contact, String from_user); //Добавить контакт
     Report addMessage(Message message, String from_user); //Добавить сообщение

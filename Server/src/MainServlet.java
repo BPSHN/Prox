@@ -14,7 +14,51 @@ public class MainServlet extends HttpServlet {
     private InputStream sin;
     private OutputStream sout;
     private String User_Login = null;
+    static int countOfReq = 0;
+    public void myLog(HttpServletRequest req, Report report)
+    {
+        ///////////My super log-file
+        //Ip:
+        // 25.20.88.73 - Саня
+        // 25.18.132.96 - Миша
+        // 25.20.162.83 - Антон
+        countOfReq ++;
+        System.out.println(countOfReq);
+        System.out.println("<<<------------------------>>>");
+        if(((String)req.getRemoteAddr()).equals("25.20.88.73"))
+        {
+            System.out.println("Имя: Саня");
+            System.out.println("Адрес: " + req.getRemoteAddr());
+        }
+        if(((String)req.getRemoteAddr()).equals("25.18.132.96"))
+        {
+            System.out.println("Имя: Миша");
+            System.out.println("Адрес: " + req.getRemoteAddr());
+        }
+        if(((String)req.getRemoteAddr()).equals("25.20.162.83"))
+        {
+            System.out.println("Имя: Антон");
+            System.out.println("Адрес: " + req.getRemoteAddr());
+        }
+        switch(report.type)
+        {
+            case 17:
+                System.out.println("Удачная Регистрация");
+                break;
+            case 18:
+                System.out.println("Удачная Авторизация");
+                break;
+            case 602:
+                System.out.println("Ошибка Регистрации: пользователь существует");
+                break;
+            case 603:
+                System.out.println("Ошибка Авторизации: неправильный логин или пароль");
+                break;
+        }
+        System.out.println(">>>>------------------------<<<<");
+        System.out.println();
 
+    }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //if(!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков, при авторизации и регистрации false
@@ -59,8 +103,8 @@ public class MainServlet extends HttpServlet {
                 report = subSystemBD.auth((Contact)report.data, req, resp, null);
                 break;
             }
-            System.out.println(report.type);
         }
+        myLog(req,report);
         // System.out.println(jsonObject.toJSONString());
         sout.write(JSONCoder.encode(report).getBytes("UTF-8"));
         resp.setStatus(200);
