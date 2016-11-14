@@ -18,7 +18,7 @@ public class JSONCoder {
                 message.contact = (Contact) decode(a, Report.CONTACT);
                 return message;
             }
-            if (t == Report.CONTACT) {
+            if ((t == Report.CONTACT || t == Report.REGISTATION) || t == Report.AUTHORISATION) {
                 Contact contact = new Contact();
                 contact.login = (String) jsonObj.get("login");
                 contact.name = (String) jsonObj.get("name");
@@ -43,7 +43,7 @@ public class JSONCoder {
             String d = (String) jsonObj.get("data");
             if(report.type == Report.MESSAGE)
                 report.data = (Message) decode(d, report.type);
-            if(report.type == Report.CONTACT)
+            if((report.type == Report.CONTACT || report.type == Report.REGISTATION) || report.type == Report.AUTHORISATION)
                 report.data = (Contact) decode(d, report.type);
         }
         catch(Exception e) {

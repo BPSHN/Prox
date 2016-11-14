@@ -20,7 +20,7 @@ public class Report {
     // Ответ сервера
     static final int FIND_CONTACT = 15;
     static final int NOT_FIND_CONTACT = 16;
-    static final int SUCCESSFUL_REG = 17; // Удачная регитрация
+    static final int SUCCESSFUL_REG = 17; // Удачная региcтрация
     static final int SUCCESSFUL_AUTH = 18; // Удачная авторизация
 
     public int type;
