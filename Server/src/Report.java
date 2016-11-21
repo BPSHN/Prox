@@ -22,6 +22,7 @@ public class Report {
     static final public int NOT_FIND_CONTACT = 16;
     static final public int SUCCESSFUL_REG = 17; // Удачная региcтрация
     static final public int SUCCESSFUL_AUTH = 18; // Удачная авторизация
+    static final public int SUCCESSFUL_SEND_MES = 19; // Удачная отправка сообщения
 
     public int type;
     public Object data;

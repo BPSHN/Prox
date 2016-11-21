@@ -64,6 +64,7 @@ public class MainServlet extends HttpServlet {
         //if(!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков, при авторизации и регистрации false
         //{}
         // !!! Достаю JSON-строку из запроса
+        // MCookies.checkCookies(req,resp);
         sin = req.getInputStream();
         sout = resp.getOutputStream();
         int contentLength = req.getContentLength(); // Количество байт в содержимом запроса
@@ -97,7 +98,7 @@ public class MainServlet extends HttpServlet {
                 report = subSystemBD.addContact((Contact)report.data, User_Login);
                 break;
             case 30: // Регистрация
-                report = subSystemBD.registration((Contact)report.data);
+                report = subSystemBD.registration((Contact)report.data,(String)req.getRemoteAddr());
                 break;
             case 31: // Авторизация
                 report = subSystemBD.auth((Contact)report.data, req, resp, null);
