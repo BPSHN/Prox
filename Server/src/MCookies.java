@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MCookies { // Работа с куками
 
     public boolean isCorUser = false; // куки не прошли
-
+    public static String idSession;
 
     static public MCookies checkCookies(HttpServletRequest req, HttpServletResponse resp) // Проверка куков
     {
@@ -19,6 +19,7 @@ public class MCookies { // Работа с куками
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("JSESSIONID")) {
                     if (cookie.getValue().equals(req.getSession().getId())) {
+                        idSession = cookie.getValue();
                         mCookies.isCorUser = true; // Куки сошлись
                     } else
                         break;

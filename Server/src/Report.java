@@ -14,7 +14,8 @@ public class Report {
 
     // TYPE
     static final public int MESSAGE = 1; // Сообщение
-    static final public int CONTACT = 2; // Контакт
+    static final public int CONTACT = 2; // добавить Контакт
+    static final public int GIVE_MY_FRIENDS = 32; // Запрос, дай мне список контактов
     static final public int REGISTATION = 30; // Запрос регистрации
     static final public int AUTHORISATION = 31; // Запрос авторизации
     // Ответ сервера
@@ -23,6 +24,7 @@ public class Report {
     static final public int SUCCESSFUL_REG = 17; // Удачная региcтрация
     static final public int SUCCESSFUL_AUTH = 18; // Удачная авторизация
     static final public int SUCCESSFUL_SEND_MES = 19; // Удачная отправка сообщения
+    static final public int SUCCESSFUL_FRIENDS = 20; // Удачно отправленный список друзей
 
     public int type;
     public Object data;

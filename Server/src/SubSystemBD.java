@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by Android on 05.10.2016.
@@ -94,7 +95,9 @@ public class SubSystemBD implements SubSystemBDInt {
                     s.next();
                     if (s.getInt("count") == 1) {
                         HttpSession session = req.getSession();
-                        String SqlReq = "insert into users_table (session_id) values (?) where login = ?";
+                        session.setMaxInactiveInterval(30 * 60);
+                        String sqlReq = "insert into users_table (session_id) values (?) where login = (?)";
+                        reqBD = DB.prepareStatement(sqlReq);
                         reqBD.setString(1, session.getId());
                         reqBD.setString(2, contact.login);
                         reqBD.execute();
@@ -130,8 +133,9 @@ public class SubSystemBD implements SubSystemBDInt {
         report.type = 2;
         return report;
     }
-    public Report addMessage(Message message, String from_user) //Добавить сообщение
+    public Report addMessage(Message message, String sID) //Добавить сообщение
     {
+        String from_user = getUserLoginByID(sID);
         Report report = new Report();
         report.data = message; // записываем сообщение в репорт
         report.type = Report.MESSAGE;
@@ -205,8 +209,39 @@ public class SubSystemBD implements SubSystemBDInt {
     }
 
     @Override
-    public Report showContact(String login) {
-        String sqlShow = "select friend from contact_list";
+    public Report showContact(String sID) {
+        Report report = new Report();
+        ArrayList<Contact> friends;
+        Contact friendContact;
+        String sqlShow = "select friend from contact_list where user_me = ?";
+        String sqlCont = "select * from users_table where login = ?";
+        try {
+            PreparedStatement reqBD = DB.prepareStatement(sqlShow);
+            reqBD.setString(1, getUserLoginByID(sID));
+            reqBD.execute();
+            ResultSet s = reqBD.getResultSet();
+            s.next();
+            while(s.next())
+            {
+                friendContact = new Contact();
+                friendContact.login = s.getString("friend");
+
+            }
+          /*  if (s.getInt("count") == 1) {
+                HttpSession session = req.getSession();
+                String SqlReq = "insert into users_table (session_id) values (?) where login = ?";
+                reqBD.setString(1, session.getId());
+                reqBD.setString(2, contact.login);
+                reqBD.execute();
+                report.type = Report.SUCCESSFUL_AUTH;
+            }*/
+            report.type = Report.SUCCESSFUL_FRIENDS;
+        }catch (SQLException e) {
+                System.out.println(e.toString());
+                report.type = Report.SQL_EXCEPTION;
+                return report;
+        }
+
         return null;
     }
 

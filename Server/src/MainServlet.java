@@ -103,6 +103,9 @@ public class MainServlet extends HttpServlet {
             case 31: // Авторизация
                 report = subSystemBD.auth((Contact)report.data, req, resp, null);
                 break;
+            case 32:
+                report = subSystemBD.showContact(MCookies.idSession);
+                break;
             }
         }
         myLog(req,report);
