@@ -125,6 +125,7 @@ public class SubSystemBD implements SubSystemBDInt {
         }
         return report;
     }
+
     public Report addContact(Contact contact, String from_user)//Добавить контакт
     {
         System.out.println("Получилось!!!");// Либо такого нет, либо да, он есть (контакт)
@@ -133,6 +134,7 @@ public class SubSystemBD implements SubSystemBDInt {
         report.type = 2;
         return report;
     }
+
     public Report addMessage(Message message, String sID) //Добавить сообщение
     {
         String from_user = getUserLoginByID(sID);
@@ -203,6 +205,7 @@ public class SubSystemBD implements SubSystemBDInt {
         report.type = Report.SUCCESSFUL_SEND_MES;
         return report;
     }
+
     public Report delContact(Contact contact, String from_user) // Удаление контакта конкретного пользователя
     {
         return null;
@@ -211,7 +214,7 @@ public class SubSystemBD implements SubSystemBDInt {
     @Override
     public Report showContact(String sID) {
         Report report = new Report();
-        ArrayList<Contact> friends;
+        ArrayList<Contact> friends = new ArrayList<Contact>();
         Contact friendContact;
         String sqlShow = "select friend from contact_list where user_me = ?";
         String sqlCont = "select * from users_table where login = ?";
@@ -220,21 +223,26 @@ public class SubSystemBD implements SubSystemBDInt {
             reqBD.setString(1, getUserLoginByID(sID));
             reqBD.execute();
             ResultSet s = reqBD.getResultSet();
-            s.next();
-            while(s.next())
+            while(s.next());
             {
                 friendContact = new Contact();
                 friendContact.login = s.getString("friend");
-
-            }
-          /*  if (s.getInt("count") == 1) {
-                HttpSession session = req.getSession();
-                String SqlReq = "insert into users_table (session_id) values (?) where login = ?";
-                reqBD.setString(1, session.getId());
-                reqBD.setString(2, contact.login);
+                DB.prepareStatement(sqlCont);
+                reqBD.setString(1, getUserLoginByID(friendContact.login));
                 reqBD.execute();
-                report.type = Report.SUCCESSFUL_AUTH;
-            }*/
+                ResultSet f = reqBD.getResultSet();
+                f.next();
+                friendContact.name = f.getString("name");
+                friends.add(friendContact);
+            }
+            // Заполнил контейнер друзьями, теперь надо их засунуть в массив
+            Contact[] masOfFriends = new Contact[friends.size()];
+            for(int i = 0; i < friends.size(); ++ i)
+            {
+                masOfFriends[i] = friends.get(i);
+            }
+            // Массив заполнен
+            // ДАЛЬШЕ НУЖЕН JSON массив
             report.type = Report.SUCCESSFUL_FRIENDS;
         }catch (SQLException e) {
                 System.out.println(e.toString());
