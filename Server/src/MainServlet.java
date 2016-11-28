@@ -13,7 +13,7 @@ public class MainServlet extends HttpServlet {
 
     private InputStream sin;
     private OutputStream sout;
-    private String User_Login = null;
+    private String idSession = null;
     static int countOfReq = 0;
     public void myLog(HttpServletRequest req, Report report)
     {
@@ -61,10 +61,7 @@ public class MainServlet extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //if(!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков, при авторизации и регистрации false
-        //{}
-        // !!! Достаю JSON-строку из запроса
-        // MCookies.checkCookies(req,resp);
+        // !!! Достаю JSON-строку из запрос
         sin = req.getInputStream();
         sout = resp.getOutputStream();
         int contentLength = req.getContentLength(); // Количество байт в содержимом запроса
@@ -72,30 +69,36 @@ public class MainServlet extends HttpServlet {
         sin.read(jsonC, 0, contentLength);
         String jsonStr = new String(jsonC, "UTF-8");
         sin.close();
-        // !!!
-        // ЗАГЛУШКА
-        //////////////Contact contact = new Contact();
-        //////////////contact.login = "Tony_Puk";
-        //////////////contact.name = "Misha_Puk";
-        //////////////String password = "asd";
-        ////
         Report report = new Report(); // Этот отчет мы будем отправлять клиенту
+
+        //УДАЛИТЬ, для заглушки
+        /*String jsonStr = "123";
+        Report report = new Report();
+        Message message = new Message();
+        message.time = "15-12-13";
+        message.text = "Hello World";
+        message.date = "2016-12-12";
+        Contact contact = new Contact();
+        contact.login = "Tony";
+        contact.name = "T";
+        message.contact = contact;*/
+        //УДАЛИТЬ, для заглушки
         SubSystemBDInt subSystemBD = SubSystemBD.getInstance(); // Доступ к базе данных
-        //if (!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков, при авторизации и регистрации false
-        //{
-        ///////User_Login = subSystemBD.getUserLoginByID((String)req.getSession().getId()); /// ЗДЕСЬ ПРОДЕБАЖ!
-         //   if(User_Login == null)
-         //       return;
-        //}
         if (jsonStr != null || jsonStr != "")
         {
             report = JSONCoder.decode(jsonStr);
+            //Заглушка
+           // report.type = 1;
+            //report.data = message;
+            //
             switch (report.type) {
             case 1: // Пришло сообщение
-                report = subSystemBD.addMessage((Message)report.data, User_Login);
+                MCookies.checkCookies(req, resp);
+                report = subSystemBD.addMessage((Message)report.data, MCookies.idSession);
                 break;
             case 2: // Добавление контакта
-                report = subSystemBD.addContact((Contact)report.data, User_Login);
+                MCookies.checkCookies(req, resp);
+                report = subSystemBD.addContact((Contact)report.data, MCookies.idSession);
                 break;
             case 30: // Регистрация
                 report = subSystemBD.registration((Contact)report.data,(String)req.getRemoteAddr());
@@ -104,6 +107,7 @@ public class MainServlet extends HttpServlet {
                 report = subSystemBD.auth((Contact)report.data, req, resp, null);
                 break;
             case 32:
+                MCookies.checkCookies(req, resp);
                 report = subSystemBD.showContact(MCookies.idSession);
                 break;
             }

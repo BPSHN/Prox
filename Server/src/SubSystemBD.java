@@ -1,3 +1,6 @@
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -8,6 +11,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -96,7 +100,7 @@ public class SubSystemBD implements SubSystemBDInt {
                     if (s.getInt("count") == 1) {
                         HttpSession session = req.getSession();
                         session.setMaxInactiveInterval(30 * 60);
-                        String sqlReq = "insert into users_table (session_id) values (?) where login = (?)";
+                        String sqlReq = "UPDATE users_table SET session_id = ? where login = ?";
                         reqBD = DB.prepareStatement(sqlReq);
                         reqBD.setString(1, session.getId());
                         reqBD.setString(2, contact.login);
@@ -115,29 +119,36 @@ public class SubSystemBD implements SubSystemBDInt {
                     }
             }
             else {
-                report.type = Report.COOKIE_FAIL;
+                report.type = Report.LOG_OR_PASS_IS_NOT_COR;
                 System.out.println("Ваш логин или пароль неверный");
                 return report;
             }
         }
-        else {
-            // ЗДЕСЬ МОЖНО СДЕЛАТЬ ЕСЛИ ЕСТЬ КУКИ
-        }
         return report;
     }
 
-    public Report addContact(Contact contact, String from_user)//Добавить контакт
+    public Report addContact(Contact contact, String sID)//Добавить контакт
     {
-        System.out.println("Получилось!!!");// Либо такого нет, либо да, он есть (контакт)
         Report report = new Report();
-        report.data = contact;
-        report.type = 2;
+        String from_user = getUserLoginByID(sID);
+        String reqAddFriend = "INSERT INTO contact_list (user_me, friend) values (?,?)";
+        try {
+            PreparedStatement reqBD = DB.prepareStatement(reqAddFriend);
+            reqBD.setString(1, from_user);
+            reqBD.setString(2, contact.login);
+        }catch(Exception e)
+        {
+            System.out.println(e.toString());
+        }
         return report;
     }
 
     public Report addMessage(Message message, String sID) //Добавить сообщение
     {
         String from_user = getUserLoginByID(sID);
+        //ЗАГЛУШКА
+        from_user = "Alex";
+        //
         Report report = new Report();
         report.data = message; // записываем сообщение в репорт
         report.type = Report.MESSAGE;
@@ -155,6 +166,7 @@ public class SubSystemBD implements SubSystemBDInt {
             // Получение адреса получателя
             reqBD = DB.prepareStatement(sqlAddr);
             reqBD.setString(1, message.contact.login);
+            reqBD.execute();
             ResultSet s = reqBD.getResultSet();
             s.next();
             String addr = s.getString("address");
@@ -214,7 +226,7 @@ public class SubSystemBD implements SubSystemBDInt {
     @Override
     public Report showContact(String sID) {
         Report report = new Report();
-        ArrayList<Contact> friends = new ArrayList<Contact>();
+        ArrayList<Contact> friends = new ArrayList<>();
         Contact friendContact;
         String sqlShow = "select friend from contact_list where user_me = ?";
         String sqlCont = "select * from users_table where login = ?";
@@ -235,12 +247,16 @@ public class SubSystemBD implements SubSystemBDInt {
                 friendContact.name = f.getString("name");
                 friends.add(friendContact);
             }
-            // Заполнил контейнер друзьями, теперь надо их засунуть в массив
-            Contact[] masOfFriends = new Contact[friends.size()];
+            JSONArray arr = new JSONArray();
+            JSONObject obj;
+            // Заполнил контейнер друзьями, теперь надо их засунуть в JSON-массив
             for(int i = 0; i < friends.size(); ++ i)
             {
-                masOfFriends[i] = friends.get(i);
+                obj = new JSONObject();
+                obj.put("friends", friends.get(i));
+                arr.add(obj);
             }
+            report.data = arr.toJSONString();
             // Массив заполнен
             // ДАЛЬШЕ НУЖЕН JSON массив
             report.type = Report.SUCCESSFUL_FRIENDS;
@@ -249,8 +265,7 @@ public class SubSystemBD implements SubSystemBDInt {
                 report.type = Report.SQL_EXCEPTION;
                 return report;
         }
-
-        return null;
+        return report;
     }
 
     public String getUserLoginByID(String id)

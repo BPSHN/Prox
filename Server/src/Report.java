@@ -9,6 +9,9 @@ public class Report {
     static final public int THE_USER_IS_NOT_EXIST = 603; // Такого пользователя несуществует
     static final public int COOKIE_FAIL = 604; // Ошибка: У пользователя нет куков или они не верны
     static final public int JSON_DECODE_FAIL = 605; // Ошибка декодирования json
+    static final public int LOG_OR_PASS_IS_NOT_COR = 606; // Логин или пароль неверные
+
+
     static final public int SUCCESSFUL_SQL = 200;
 
 

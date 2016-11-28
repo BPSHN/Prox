@@ -11,9 +11,9 @@
     <title>$Title$</title>
   </head>
   <body>
-  <script>
-
-  </script>
     Hello, i am server
+    <form action="http://localhost:8080/login" method="POST">
+      <input type="submit">Send</input>
+    </form>
   </body>
 </html>
