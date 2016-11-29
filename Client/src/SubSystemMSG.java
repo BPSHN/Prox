@@ -2,17 +2,95 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IHaveSomeCookies on 17.10.2016.
  */
 public class SubSystemMSG implements SubSystemMSGInterface{
 
+    //добавил 29.11
+    static final String ADDRESS = "http://25.19.168.170:8080/";
+    static final String COOKIES_HEADER = "Set-Cookie";
+    static java.net.CookieManager msCookieManager = new java.net.CookieManager();
+    //добавил 29.11
+    @Override
+    public void requestListContacts(ReportListener reportListener) {
+        Report report = new Report();
+        report.data = null;
+        report.type = Report.GIVE_MY_FRIENDS; //запрос на получение списка контактов
+        String stringReport = JSONCoder.encode(report);
+        InputStream is = null;
+        byte[] answerData = null;
+
+        try
+        {
+
+            URL url = new URL(ADDRESS + "login");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+
+            connection.setRequestProperty("User-Agent", "fff");
+            connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+
+            if (msCookieManager.getCookieStore().getCookies().size() > 0) {
+                System.out.println(msCookieManager.getCookieStore().getCookies().toString());
+                System.out.println(msCookieManager.getCookieStore().getCookies().get(0).toString());
+                // While joining the Cookies, use ',' or ';' as needed. Most of the servers are using ';'
+                connection.setRequestProperty(COOKIES_HEADER, msCookieManager.getCookieStore().getCookies().get(0).toString());
+                connection.setRequestProperty("Cookie", msCookieManager.getCookieStore().getCookies().get(0).toString());
+
+            }
+            connection.setDoOutput(true);
+
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+            wr.writeBytes(stringReport);
+            wr.flush();
+            wr.close();
+
+            connection.connect();
+
+            OutputStream outputStream = connection.getOutputStream();
+
+            //Прослушка ответа+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            is = connection.getInputStream();
+            byte[] buffer = new byte[8192]; // Задаем размер буфера
+            // Далее читаем ответ
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytesRead);
+            }
+            answerData = baos.toByteArray();
+
+            int responseCode = connection.getResponseCode();
+
+
+            //ответ
+            String JSONstr = new String(answerData, "UTF-8");//
+            Report answerReport = JSONCoder.decode(JSONstr);
+            //int answerCode = answerReport.type;
+            reportListener.handler(answerReport);
+            //-Прослушка ответа
+
+
+            System.out.println("Код ошибки : " + responseCode);
+            System.out.println("Строка : " + stringReport);
+            System.out.println("Строка ответ: " + JSONstr);
+
+        }
+        catch (Exception e) {}
+    }
 
     @Override
     public void loginMe(String login,String password, ReportListener reportListener) {
+
+
         Contact contact = new Contact();
         contact.login = login;
         contact.password = password;
@@ -27,7 +105,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         try //
         {
 
-            URL url = new URL("http://25.19.168.170:8080/login");
+            URL url = new URL(ADDRESS + "login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             System.out.println("Метод запроса: " +
@@ -55,10 +133,21 @@ public class SubSystemMSG implements SubSystemMSGInterface{
                 baos.write(buffer, 0, bytesRead);
             }
             answerData = baos.toByteArray();
+
+            int responseCode = connection.getResponseCode();
+
+            Map<String, List<String>> headerFields = connection.getHeaderFields();
+            List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
+            if (cookiesHeader != null) {
+                for (String cookie : cookiesHeader) {
+                    msCookieManager.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
+                }
+            }
+
+
             String JSONstr = new String(answerData, "UTF-8");
             Report answerReport = JSONCoder.decode(JSONstr);
             //int answerCode = answerReport.type;
-            int responseCode = connection.getResponseCode();
             System.out.println("Код ошибки : " + responseCode);
             System.out.println("Строка : " + stringReport);
             System.out.println("Строка : " + JSONstr);
@@ -82,7 +171,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         try //
         {
 
-            URL url = new URL("http://25.19.168.170:8080/login");
+            URL url = new URL(ADDRESS + "login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             System.out.println("Метод запроса: " +
@@ -152,7 +241,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
         try //
         {
 
-            URL url = new URL("http://25.19.168.170:8080/login");
+            URL url = new URL(ADDRESS + "login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             System.out.println("Метод запроса: " +
