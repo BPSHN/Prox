@@ -9,5 +9,6 @@ public interface SubSystemMSGInterface {
     void registration(Contact contact, ReportListener reportListener);//+
     void registrListener(ReportListener reportListener);
     void sendMessage(Message message, ReportListener reportListener);
+    void requestListContacts(ReportListener reportListener); //добавил
     void loginMe(String login,String password, ReportListener reportListener);//+
 }
