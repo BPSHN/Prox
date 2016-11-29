@@ -14,5 +14,5 @@ public interface SubSystemBDInt {
     Report addMessage(Message message, String sID); //Добавить сообщение
     Report delContact(Contact contact, String from_user); // Удаление контакта конкретного пользователя
     Report showContact(String sID); // Отображение контактов
-    public String getUserLoginByID(String id); // Достает логин юзера по id сессии
+    String getUserLoginByID(String id); // Достает логин юзера по id сессии
 }

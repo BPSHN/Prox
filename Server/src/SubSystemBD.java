@@ -1,6 +1,7 @@
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -98,6 +99,14 @@ public class SubSystemBD implements SubSystemBDInt {
                     ResultSet s = reqBD.getResultSet();
                     s.next();
                     if (s.getInt("count") == 1) {
+                        /*HttpSession session = req.getSession();
+                        session.setAttribute("user", "user");
+                        session.setMaxInactiveInterval(30 * 60);
+                        Cookie cookie = new Cookie("user", "user");
+                        cookie.setMaxAge(30 * 60);
+                        resp.addCookie(cookie);
+                        resp.setStatus(202);*/
+                        //////
                         HttpSession session = req.getSession();
                         session.setMaxInactiveInterval(30 * 60);
                         String sqlReq = "UPDATE users_table SET session_id = ? where login = ?";
@@ -127,6 +136,7 @@ public class SubSystemBD implements SubSystemBDInt {
         return report;
     }
 
+    @Override
     public Report addContact(Contact contact, String sID)//Добавить контакт
     {
         Report report = new Report();
@@ -143,6 +153,7 @@ public class SubSystemBD implements SubSystemBDInt {
         return report;
     }
 
+    @Override
     public Report addMessage(Message message, String sID) //Добавить сообщение
     {
         String from_user = getUserLoginByID(sID);
@@ -218,6 +229,7 @@ public class SubSystemBD implements SubSystemBDInt {
         return report;
     }
 
+    @Override
     public Report delContact(Contact contact, String from_user) // Удаление контакта конкретного пользователя
     {
         return null;
@@ -233,14 +245,17 @@ public class SubSystemBD implements SubSystemBDInt {
         try {
             PreparedStatement reqBD = DB.prepareStatement(sqlShow);
             reqBD.setString(1, getUserLoginByID(sID));
-            reqBD.execute();
+            if (!reqBD.execute())
+                report.type = Report.SQL_EXCEPTION;
+            else
+                report.type = Report.SUCCESSFUL_SQL;
             ResultSet s = reqBD.getResultSet();
-            while(s.next());
+            while(s.next())
             {
                 friendContact = new Contact();
                 friendContact.login = s.getString("friend");
                 DB.prepareStatement(sqlCont);
-                reqBD.setString(1, getUserLoginByID(friendContact.login));
+                reqBD.setString(1, friendContact.login);
                 reqBD.execute();
                 ResultSet f = reqBD.getResultSet();
                 f.next();
@@ -268,10 +283,11 @@ public class SubSystemBD implements SubSystemBDInt {
         return report;
     }
 
+    @Override
     public String getUserLoginByID(String id)
     {
         String login;
-        String checkSqlReq = "select login from users_table where sessio_id = ?";
+        String checkSqlReq = "select login from users_table where session_id = ?";
         try {
             PreparedStatement reqBD = DB.prepareStatement(checkSqlReq);
             reqBD.setString(1, id);
