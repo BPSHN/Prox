@@ -1,3 +1,10 @@
+import simple.JSONArray;
+import simple.JSONObject;
+import simple.JSONValue;
+import simple.parser.JSONParser;
+
+import java.util.ArrayList;
+
 /**
  * Created by IHaveSomeCookies on 17.10.2016.
  */
@@ -39,9 +46,39 @@ public class Model implements ModelOnClientInterface {
         myThready.start();	//Запуск потока
     }
 
+    //добавил 29
     @Override
     public void getListContact() {
 
+        ReportListener reportListener = new ReportListener() {
+            @Override
+            public void handler(Report report) {
+                if(report.type != Report.SUCCESSFUL_FRIENDS)
+                    getListContactListener.handleEvent(null);
+                else {
+                    ArrayList<Contact> contactArrayList = new ArrayList<>();
+                    String strListArr = (String) report.data;
+                    try {
+                        JSONObject object = (JSONObject) JSONValue.parseWithException(strListArr);
+                        System.out.println(object.toString());
+
+                    }
+                    catch (Exception e) {
+                        System.out.println("public void getListContact()" + e.toString());
+                    };
+                    getListContactListener.handleEvent(contactArrayList);
+                }
+            }
+        };
+        //Создание потока
+        Thread myThready = new Thread(new Runnable()
+        {
+            public void run() //Этот метод будет выполняться в побочном потоке
+            {
+                subSystemMSG.requestListContacts(reportListener);
+            }
+        });
+        myThready.start();	//Запуск потока
     }
 
     @Override
