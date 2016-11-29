@@ -48,6 +48,9 @@ public class MainServlet extends HttpServlet {
             case 18:
                 System.out.println("Удачная Авторизация");
                 break;
+            case 20:
+                System.out.println("Удачно отправлен список друзей");
+                break;
             case 602:
                 System.out.println("Ошибка Регистрации: пользователь существует");
                 break;
@@ -92,21 +95,21 @@ public class MainServlet extends HttpServlet {
             //report.data = message;
             //
             switch (report.type) {
-            case 1: // Пришло сообщение
+            case Report.MESSAGE: // Пришло сообщение
                 MCookies.checkCookies(req, resp);
                 report = subSystemBD.addMessage((Message)report.data, MCookies.idSession);
                 break;
-            case 2: // Добавление контакта
+            case Report.CONTACT: // Добавление контакта
                 MCookies.checkCookies(req, resp);
                 report = subSystemBD.addContact((Contact)report.data, MCookies.idSession);
                 break;
-            case 30: // Регистрация
+            case Report.REGISTATION: // Регистрация
                 report = subSystemBD.registration((Contact)report.data,(String)req.getRemoteAddr());
                 break;
-            case 31: // Авторизация
+            case Report.AUTHORISATION: // Авторизация
                 report = subSystemBD.auth((Contact)report.data, req, resp, null);
                 break;
-            case 32:
+            case Report.GIVE_MY_FRIENDS:
                 MCookies.checkCookies(req, resp);
                 report = subSystemBD.showContact(MCookies.idSession);
                 break;
