@@ -47,7 +47,7 @@ public class SubSystemBD implements SubSystemBDInt {
     }
 
     @Override
-    public Report registration(Contact contact, String addr) {
+    public Report registration(Contact contact, String addr) { //++++++++++++++++
         // Проверка, сущестует ли пользователь с таким логином
         Report report = new Report();
         report.data = contact;
@@ -82,7 +82,7 @@ public class SubSystemBD implements SubSystemBDInt {
     }
 
     @Override
-    public Report auth(Contact contact, HttpServletRequest req, HttpServletResponse resp, String address){
+    public Report auth(Contact contact, HttpServletRequest req, HttpServletResponse resp, String address){ //+++++++++++
         Report report = new Report();
         if(!(MCookies.checkCookies(req, resp)).isCorUser) // Проверка куков
         {
@@ -236,7 +236,7 @@ public class SubSystemBD implements SubSystemBDInt {
     }
 
     @Override
-    public Report showContact(String sID) {
+    public Report showContact(String sID) { //+++++++++++++++++++
         Report report = new Report();
         ArrayList<Contact> friends = new ArrayList<>();
         Contact friendContact;
@@ -254,7 +254,7 @@ public class SubSystemBD implements SubSystemBDInt {
             {
                 friendContact = new Contact();
                 friendContact.login = s.getString("friend");
-                DB.prepareStatement(sqlCont);
+                reqBD = DB.prepareStatement(sqlCont);
                 reqBD.setString(1, friendContact.login);
                 reqBD.execute();
                 ResultSet f = reqBD.getResultSet();
@@ -263,17 +263,18 @@ public class SubSystemBD implements SubSystemBDInt {
                 friends.add(friendContact);
             }
             JSONArray arr = new JSONArray();
-            JSONObject obj;
+            JSONObject obj = new JSONObject();
             // Заполнил контейнер друзьями, теперь надо их засунуть в JSON-массив
             for(int i = 0; i < friends.size(); ++ i)
             {
-                obj = new JSONObject();
-                obj.put("friends", friends.get(i));
-                arr.add(obj);
+                //obj = new JSONObject();
+                //obj.put("friends", JSONCoder.encode(friends.get(i)));
+                arr.add(JSONCoder.encode(friends.get(i)));
             }
-            report.data = arr.toJSONString();
+            obj.put("friends", arr);
+            //report.data = arr.toJSONString();
+            report.data = obj.toJSONString();
             // Массив заполнен
-            // ДАЛЬШЕ НУЖЕН JSON массив
             report.type = Report.SUCCESSFUL_FRIENDS;
         }catch (SQLException e) {
                 System.out.println(e.toString());

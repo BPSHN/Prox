@@ -1,6 +1,8 @@
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
+import java.util.ArrayList;
+
 public class JSONCoder {
     public static Object decode(String string, int t) // t = 1 - message, t = 2 - contact
     {
