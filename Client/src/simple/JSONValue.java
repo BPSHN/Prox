@@ -4,8 +4,8 @@
  */
 package simple;
 
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import simple.parser.JSONParser;
+import simple.parser.ParseException;
 
 import java.io.*;
 import java.util.Collection;

@@ -4,8 +4,8 @@
  */
 package simple.parser;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import simple.JSONArray;
+import simple.JSONObject;
 
 import java.io.IOException;
 import java.io.Reader;

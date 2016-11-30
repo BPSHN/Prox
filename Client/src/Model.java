@@ -1,9 +1,8 @@
-import simple.JSONArray;
-import simple.JSONObject;
-import simple.JSONValue;
-import simple.parser.JSONParser;
+import simple.*;
+import simple.parser.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by IHaveSomeCookies on 17.10.2016.
@@ -59,8 +58,23 @@ public class Model implements ModelOnClientInterface {
                     ArrayList<Contact> contactArrayList = new ArrayList<>();
                     String strListArr = (String) report.data;
                     try {
-                        JSONObject object = (JSONObject) JSONValue.parseWithException(strListArr);
-                        System.out.println(object.toString());
+                        JSONObject jsonObj;
+                        JSONParser parser = new JSONParser();
+                        Object obj = parser.parse(strListArr);
+                        jsonObj = (JSONObject) obj;
+
+                        JSONArray arr = (JSONArray) jsonObj.get("friends");// new JSONArray();
+                        Iterator iter = arr.iterator();
+                        String cont;
+                        Contact contact;
+                        while(iter.hasNext())
+                        {
+                            cont = (String) iter.next();
+                            contact = (Contact)JSONCoder.decode(cont, 2);
+                            contactArrayList.add(contact);
+                        }
+
+                        System.out.println(arr.toString());
 
                     }
                     catch (Exception e) {

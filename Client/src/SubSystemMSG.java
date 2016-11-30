@@ -135,7 +135,6 @@ public class SubSystemMSG implements SubSystemMSGInterface{
             answerData = baos.toByteArray();
 
             int responseCode = connection.getResponseCode();
-
             Map<String, List<String>> headerFields = connection.getHeaderFields();
             List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
             if (cookiesHeader != null) {
@@ -143,8 +142,6 @@ public class SubSystemMSG implements SubSystemMSGInterface{
                     msCookieManager.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
                 }
             }
-
-
             String JSONstr = new String(answerData, "UTF-8");
             Report answerReport = JSONCoder.decode(JSONstr);
             //int answerCode = answerReport.type;
