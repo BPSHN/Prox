@@ -28,15 +28,13 @@ public class TEST {
             //subSystemMSG.addContact((Contact) contact, reportListener);*/
 
         Model model = new Model();
+        //тест входа в систему
         model.regLoginMeListener((int typeResponse) -> {
             System.out.println(typeResponse);
-            GetListContactListener getListContactListener = new GetListContactListener() {
-                @Override
-                public void handleEvent(ArrayList<Contact> contactArrayList) {
-
-                }
-            };
-            model.regGetListContactListener(getListContactListener);
+            //тест получения списка контактов
+            model.regGetListContactListener((ArrayList<Contact> contactArrayList) -> {
+                System.out.println(contactArrayList.size());
+            });
             model.getListContact();
         });
         model.loginMe("Tony", "123");
