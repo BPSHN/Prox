@@ -12,5 +12,7 @@ public interface ModelOnClientInterface {
     void regGetListDialogListener(GetListDialogListener listener);
     void regRegistrationListener(RegistrationListener listener);
     void regAddContactListener(AddContactListener listener);
+    void regDelContactListener(UniversalListener delContactListener);
     void regLoginMeListener(LoginMeListener listener);
+    void deleteContact(Contact contact);
 }

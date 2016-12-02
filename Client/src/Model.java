@@ -9,12 +9,16 @@ import java.util.Iterator;
  */
 public class Model implements ModelOnClientInterface {
 
-    RegistrationListener registrationListener;
-    LoginMeListener loginMeListener;
-    GetListDialogListener getListDialogListener;
-    GetListContactListener getListContactListener;
-    AddContactListener addContactListener;
+    private RegistrationListener registrationListener;
+    private LoginMeListener loginMeListener;
+    private GetListDialogListener getListDialogListener;
+    private GetListContactListener getListContactListener;
+    private AddContactListener addContactListener;
+    //add 02.12
+    private UniversalListener delContactListener;
+
     SubSystemMSG subSystemMSG;
+
     public Model (){
         subSystemMSG = new SubSystemMSG();
     }
@@ -165,4 +169,30 @@ public class Model implements ModelOnClientInterface {
 
     @Override
     public void regLoginMeListener(LoginMeListener listener) {loginMeListener = listener; }
+
+    //add 02.12
+    @Override
+    public void deleteContact(Contact contact) {
+        ReportListener reportListener = new ReportListener() {
+            @Override
+            public void handler(Report report) {
+                delContactListener.handlerEvent(report.type);
+            }
+        };
+        //Создание потока
+        Thread myThready = new Thread(new Runnable()
+        {
+            public void run() //Этот метод будет выполняться в побочном потоке
+            {
+                subSystemMSG.delContact(contact,reportListener);
+            }
+        });
+        myThready.start();	//Запуск потока
+    }
+
+    //add 02.12
+    @Override
+    public void regDelContactListener(UniversalListener delContactListener) {
+        this.delContactListener = delContactListener;
+    }
 }
