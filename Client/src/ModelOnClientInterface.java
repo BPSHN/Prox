@@ -3,16 +3,23 @@
  */
 public interface ModelOnClientInterface {
     void addContact(Contact contact);
-    void getListContact();
+
+    void getListContact(); //done
+    void deleteContact(Contact contact);//done
+    void findContacts(Contact contact);//done
+
     void getListDialog(Contact contact);
-    void loginMe(String login,String password);
-    void registration(Contact contact);
+
+    void loginMe(String login,String password);//done
+    void registration(Contact contact);//done
+
     void sendMessage(Message message);
-    void regGetListContactListener(GetListContactListener listener);
-    void regGetListDialogListener(GetListDialogListener listener);
-    void regRegistrationListener(RegistrationListener listener);
-    void regAddContactListener(AddContactListener listener);
-    void regDelContactListener(UniversalListener delContactListener);
-    void regLoginMeListener(LoginMeListener listener);
-    void deleteContact(Contact contact);
+
+    void regGetListContactListener(GetListContactListener listener);//done
+    void regGetListDialogListener(GetListDialogListener listener);//done
+    void regRegistrationListener(RegistrationListener listener);//done
+    void regAddContactListener(AddContactListener listener);//done
+    void regDelContactListener(UniversalListener delContactListener);//done
+    void regLoginMeListener(LoginMeListener listener);//done
+    void regFindContactsListener(GetListContactListener listener);
 }

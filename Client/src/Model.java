@@ -16,6 +16,7 @@ public class Model implements ModelOnClientInterface {
     private AddContactListener addContactListener;
     //add 02.12
     private UniversalListener delContactListener;
+    private GetListContactListener findContactsListener;
 
     SubSystemMSG subSystemMSG;
 
@@ -170,6 +171,11 @@ public class Model implements ModelOnClientInterface {
     @Override
     public void regLoginMeListener(LoginMeListener listener) {loginMeListener = listener; }
 
+    @Override
+    public void regFindContactsListener(GetListContactListener listener) {
+        findContactsListener = listener;
+    }
+
     //add 02.12
     @Override
     public void deleteContact(Contact contact) {
@@ -185,6 +191,55 @@ public class Model implements ModelOnClientInterface {
             public void run() //Этот метод будет выполняться в побочном потоке
             {
                 subSystemMSG.delContact(contact,reportListener);
+            }
+        });
+        myThready.start();	//Запуск потока
+    }
+
+    @Override
+    public void findContacts(Contact contact) {
+        ReportListener reportListener = new ReportListener() {
+            @Override
+            public void handler(Report report) {
+                if(report.data != null)
+                {
+                    ArrayList<Contact> contactArrayList = new ArrayList<>();
+                    String strListArr = (String) report.data;
+                    try {
+                        JSONObject jsonObj;
+                        JSONParser parser = new JSONParser();
+                        Object obj = parser.parse(strListArr);
+                        jsonObj = (JSONObject) obj;
+
+                        JSONArray arr = (JSONArray) jsonObj.get("findList");// new JSONArray();
+                        Iterator iter = arr.iterator();
+                        String cont;
+                        Contact contact;
+                        while(iter.hasNext())
+                        {
+                            cont = (String) iter.next();
+                            contact = (Contact)JSONCoder.decode(cont, 2);
+                            contactArrayList.add(contact);
+                        }
+
+                        System.out.println(arr.toString());
+
+                    }
+                    catch (Exception e) {
+                        System.out.println("public void getListContact()" + e.toString());
+                    };
+                    findContactsListener.handleEvent(contactArrayList);
+                }
+                else
+                    findContactsListener.handleEvent(null);
+            }
+        };
+        //Создание потока
+        Thread myThready = new Thread(new Runnable()
+        {
+            public void run() //Этот метод будет выполняться в побочном потоке
+            {
+                subSystemMSG.findContact(contact, reportListener);
             }
         });
         myThready.start();	//Запуск потока

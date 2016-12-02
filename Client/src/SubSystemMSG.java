@@ -69,9 +69,6 @@ public class SubSystemMSG implements SubSystemMSGInterface{
             }
             answerData = baos.toByteArray();
 
-            int responseCode = connection.getResponseCode();
-
-
             //ответ
             String JSONstr = new String(answerData, "UTF-8");//
             Report answerReport = JSONCoder.decode(JSONstr);
@@ -270,8 +267,65 @@ public class SubSystemMSG implements SubSystemMSGInterface{
     }
 
     @Override
-    public void findContact(Contact contact, ReportListener reportListener, int I1, int I2) {
+    public void findContact(Contact contact, ReportListener reportListener) {
+        Contact copContact = new Contact();
+        copContact.login = contact.login;
 
+        Report report = new Report();
+        report.data = copContact;
+        report.type = Report.FIND_CONTACTS; //запрос на получение списка найденных контактов
+
+        String stringReport = JSONCoder.encode(report);
+        InputStream is = null;
+        byte[] answerData = null;
+
+        try
+        {
+
+            URL url = new URL(ADDRESS + "login");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+
+            connection.setRequestProperty("User-Agent", "fff");
+            connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+
+            if (msCookieManager.getCookieStore().getCookies().size() > 0) {
+                System.out.println(msCookieManager.getCookieStore().getCookies().toString());
+                System.out.println(msCookieManager.getCookieStore().getCookies().get(0).toString());
+                // While joining the Cookies, use ',' or ';' as needed. Most of the servers are using ';'
+                connection.setRequestProperty(COOKIES_HEADER, msCookieManager.getCookieStore().getCookies().get(0).toString());
+                connection.setRequestProperty("Cookie", msCookieManager.getCookieStore().getCookies().get(0).toString());
+
+            }
+            connection.setDoOutput(true);
+
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+            wr.writeBytes(stringReport);
+            wr.flush();
+            wr.close();
+
+            connection.connect();
+
+            OutputStream outputStream = connection.getOutputStream();
+
+            //Прослушка ответа+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            is = connection.getInputStream();
+            byte[] buffer = new byte[8192]; // Задаем размер буфера
+            // Далее читаем ответ
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytesRead);
+            }
+            answerData = baos.toByteArray();
+
+            //ответ
+            String JSONstr = new String(answerData, "UTF-8");//
+            Report answerReport = JSONCoder.decode(JSONstr);
+            reportListener.handler(answerReport);
+        }
+        catch (Exception e) {}
     }
 
     @Override
