@@ -21,5 +21,5 @@ public interface ModelOnClientInterface {
     void regAddContactListener(AddContactListener listener);//done
     void regDelContactListener(UniversalListener delContactListener);//done
     void regLoginMeListener(LoginMeListener listener);//done
-    void regFindContactsListener(GetListContactListener listener);
+    void regFindContactsListener(GetListContactListener listener);//done
 }

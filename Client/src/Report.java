@@ -29,7 +29,7 @@ public class Report {
     static final public int SUCCESSFUL_SEND_MES = 19; // Удачная отправка сообщения
     static final public int SUCCESSFUL_FRIENDS = 20; // Удачно отправленный список друзей
     static final public int SUCCESSFUL_DEL = 21; //удачное удаление контакта
-
+    static final public int SUCCESSFUL_ADD = 22; // Удачное добавление друга
 
     public int type;
     public Object data;

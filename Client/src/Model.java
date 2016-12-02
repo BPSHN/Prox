@@ -29,14 +29,12 @@ public class Model implements ModelOnClientInterface {
         ReportListener reportListener = new ReportListener() {
             @Override
             public void handler(Report report) {
-                if (report.type == Report.NOT_FIND_CONTACT){ //если не нашел контакт
-                    addContactListener.handlerEvent(null);
-                }
-                if (report.type == Report.FIND_CONTACT){ //если нашел контакт
-                    //String strContact = (String ) report.data;
+                if (report.type == Report.SUCCESSFUL_ADD){ //если нашел контакт
                     Contact contact = (Contact) JSONCoder.decode((String) report.data,2);
                     addContactListener.handlerEvent(contact);
                 }
+                else
+                    addContactListener.handlerEvent(null);
             }
         };
         //Создание потока
