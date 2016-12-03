@@ -77,7 +77,7 @@ public class TEST {
 
             //тест добавления контакта в список контактов
             Contact c2 = new Contact();
-            c2.login = "Tony";
+            c2.login = "To";
             model.regAddContactListener((Contact con) -> {
                 if(con == null)
                     System.out.println("Контакт не добавлен");
