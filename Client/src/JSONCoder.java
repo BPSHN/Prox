@@ -15,7 +15,8 @@ public class JSONCoder {
                 message.text = (String) jsonObj.get("text");
                 message.time = (String) jsonObj.get("time");
                 String a = (String) jsonObj.get("contact");
-                message.contact = (Contact) decode(a, Report.CONTACT);
+                if(a != null)
+                    message.contact = (Contact) decode(a, Report.CONTACT);
                 return message;
             }
             if (t == Report.CONTACT) {

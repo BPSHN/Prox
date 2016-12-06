@@ -85,7 +85,7 @@ public class TEST {
             model.addContact(c2);*/
 
             //тест отправки сообщения
-            /*DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+           /*DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date(System.currentTimeMillis());
             System.out.println(dateFormat.format(date));
             Contact c3 = new Contact();
@@ -95,31 +95,31 @@ public class TEST {
             });
             Message message = new Message();
             message.contact = c3;
-            message.text = "HELLO4!!!!";
+            message.text = "HELLO8!!!!";
             message.date = dateFormat.format(date);
             message.time = new SimpleDateFormat("HH:mm:ss").format(date);
             model.sendMessage(message);*/
 
-            /*
+
             //тест получения всего диалога
             Contact c5 = new Contact();
             c5.login = "Alex";
             model.regGetListDialogListener((ArrayList<Message> mes) ->{
                 System.out.println(mes.size());
             });
-            model.getListDialog(c5);*/
+            model.getListDialog(c5);
 
             //тест обновления диалога
-            Contact c5 = new Contact();
-            c5.login = "Tony";
+            /*Contact c5 = new Contact();
+            c5.login = "Alex";
             model.getUpdateDialog(c5, (ArrayList<Message> mes) ->{
                 System.out.println(mes.size());
-            });
+            });*/
 
 
 
         });
-        model.loginMe("Alex", "123");
+        model.loginMe("Misha", "123");
 
 
 

@@ -67,7 +67,7 @@ public class SubSystemMSG implements SubSystemMSGInterface{
             JSONstr = new String(answerData, "UTF-8");//
         }
         catch (Exception e) {
-
+            System.out.println(e.toString());
         }
         if(JSONstr == null)
             System.out.println("null str in private String aggregateConnectionWithSession(Report report)");
