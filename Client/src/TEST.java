@@ -1,9 +1,7 @@
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
-
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Александр on 31.10.2016.
@@ -76,17 +74,52 @@ public class TEST {
 
 
             //тест добавления контакта в список контактов
-            Contact c2 = new Contact();
-            c2.login = "Tony";
+            /*Contact c2 = new Contact();
+            c2.login = "To";
             model.regAddContactListener((Contact con) -> {
                 if(con == null)
                     System.out.println("Контакт не добавлен");
                 else
                     System.out.println(con.login);
             });
-            model.addContact(c2);
+            model.addContact(c2);*/
+
+            //тест отправки сообщения
+            /*DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date(System.currentTimeMillis());
+            System.out.println(dateFormat.format(date));
+            Contact c3 = new Contact();
+            c3.login = "Misha";
+            model.regSendingCallBack((int type) -> {
+                System.out.println(type);
+            });
+            Message message = new Message();
+            message.contact = c3;
+            message.text = "HELLO4!!!!";
+            message.date = dateFormat.format(date);
+            message.time = new SimpleDateFormat("HH:mm:ss").format(date);
+            model.sendMessage(message);*/
+
+            /*
+            //тест получения всего диалога
+            Contact c5 = new Contact();
+            c5.login = "Alex";
+            model.regGetListDialogListener((ArrayList<Message> mes) ->{
+                System.out.println(mes.size());
+            });
+            model.getListDialog(c5);*/
+
+            //тест обновления диалога
+            Contact c5 = new Contact();
+            c5.login = "Tony";
+            model.getUpdateDialog(c5, (ArrayList<Message> mes) ->{
+                System.out.println(mes.size());
+            });
+
+
+
         });
-        model.loginMe("Tony", "123");
+        model.loginMe("Alex", "123");
 
 
 
