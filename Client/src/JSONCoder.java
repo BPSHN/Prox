@@ -2,6 +2,12 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
 public class JSONCoder {
+
+
+    //внимание, изменить + не должны быть одинаковыми
+    static final String idStatus = "1";
+    static final String idCountOfMes = "2";
+
     public static Object decode(String string, int t) // t = 1 - message, t = 2 - contact
     {
         JSONParser parser = new JSONParser();
@@ -24,6 +30,8 @@ public class JSONCoder {
                 contact.login = (String) jsonObj.get("login");
                 contact.name = (String) jsonObj.get("name");
                 contact.password = (String) jsonObj.get("password");
+                contact.status = (int) jsonObj.get(idStatus);
+                contact.countOfMes = (int) jsonObj.get(idCountOfMes);
                 return contact;
             }
         } catch (Exception e) {
@@ -72,6 +80,8 @@ public class JSONCoder {
         resultJson.put("login", contact.login);
         resultJson.put("name", contact.name);
         resultJson.put("password", contact.password);
+        resultJson.put(idStatus, contact.status);
+        resultJson.put(idCountOfMes,contact.countOfMes);
         return resultJson.toJSONString();
     }
     public static String encode(Report report)

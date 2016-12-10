@@ -100,6 +100,37 @@ public class SubSystemMSG implements SubSystemMSGInterface{
     }
 
     @Override
+    public void sendStatus(int status, ReportListener reportListener) {
+        Report report = new Report();
+        Contact contact = new Contact();
+        contact.status = status;
+        report.data = contact;
+        report.type = Report.GIVE_ME_STATUS;
+
+        String answerStr = aggregateConnectionWithSession(report);
+
+        Report answerReport = JSONCoder.decode(answerStr);
+        reportListener.handler(answerReport);
+    }
+
+    @Override
+    public void requestMyContact(ReportListener reportListener) {
+        Report report = new Report();
+        report.data = null;
+        report.type = Report.GIVE_ME_ABOUT;
+
+        String answerStr = aggregateConnectionWithSession(report);
+
+        Report answerReport = JSONCoder.decode(answerStr);
+        reportListener.handler(answerReport);
+    }
+
+    @Override
+    public void requestUpdateContacts(ReportListener reportListener) {
+
+    }
+
+    @Override
     public void requestListContacts(ReportListener reportListener) {
         Report report = new Report();
         report.data = null;

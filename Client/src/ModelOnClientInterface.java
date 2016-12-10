@@ -24,4 +24,9 @@ public interface ModelOnClientInterface {
     void regLoginMeListener(LoginMeListener listener);//done
     void regFindContactsListener(GetListContactListener listener);//done
     void regSendingCallBack(UniversalListener listener);//done
+
+    //11.12
+    void setMyStatus(int status, UniversalListener listener);
+    void getMyContact(UniversalListenerWithObject listener);
+    void getUpdateContacts(GetListContactListener listener);
 }
