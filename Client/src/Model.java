@@ -302,12 +302,12 @@ public class Model implements ModelOnClientInterface {
     }
 
     @Override
-    public void getUpdateContacts(GetListContactListener listener) {
+    public void getUpdateContacts(final GetListContactListener listener) {
         ReportListener reportListener = new ReportListener() {
             @Override
             public void handler(Report report) {
                 if (report.type == Report.NO_UPDATES)
-                    getListContactListener.handleEvent(null);
+                    listener.handleEvent(null);
                 else {
                     ArrayList<Contact> contactArrayList = new ArrayList<>();
                     String strListArr = (String) report.data;
@@ -331,7 +331,7 @@ public class Model implements ModelOnClientInterface {
                         System.out.println("public void getListContact()" + e.toString());
                     }
                     ;
-                    getListContactListener.handleEvent(contactArrayList);
+                    listener.handleEvent(contactArrayList);
                 }
             }
         };
