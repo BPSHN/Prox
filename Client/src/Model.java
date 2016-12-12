@@ -79,9 +79,7 @@ public class Model implements ModelOnClientInterface {
                             contact = (Contact)JSONCoder.decode(cont, 2);
                             contactArrayList.add(contact);
                         }
-
                         //System.out.println(arr.toString());
-
                     }
                     catch (Exception e) {
                         System.out.println("public void getListContact()" + e.toString());
@@ -264,6 +262,90 @@ public class Model implements ModelOnClientInterface {
     public void regSendingCallBack(UniversalListener listener) {
         sendingCallBack = listener;
     }
+
+    @Override
+    public void setMyStatus(int status, UniversalListener listener) {
+        ReportListener reportListener = new ReportListener() {
+            @Override
+            public void handler(Report report) {
+                listener.handlerEvent(report.type);
+            }
+        };
+        //Создание потока
+        Thread myThready = new Thread(new Runnable()
+        {
+            public void run() //Этот метод будет выполняться в побочном потоке
+            {
+                subSystemMSG.sendStatus(status,reportListener); // поменять константы
+            }
+        });
+        myThready.start();	//Запуск потока
+    }
+
+    @Override
+    public void getMyContact(UniversalListenerWithObject listener) {
+        ReportListener reportListener = new ReportListener() {
+            @Override
+            public void handler(Report report) {
+                listener.handlerEvent(report.type,report.data);
+            }
+        };
+        //Создание потока
+        Thread myThready = new Thread(new Runnable()
+        {
+            public void run() //Этот метод будет выполняться в побочном потоке
+            {
+                subSystemMSG.requestMyContact(reportListener);
+            }
+        });
+        myThready.start();	//Запуск потока
+    }
+
+    @Override
+    public void getUpdateContacts(final GetListContactListener listener) {
+        ReportListener reportListener = new ReportListener() {
+            @Override
+            public void handler(Report report) {
+                if (report.type == Report.NO_UPDATES)
+                    listener.handleEvent(null);
+                else {
+                    ArrayList<Contact> contactArrayList = new ArrayList<>();
+                    String strListArr = (String) report.data;
+                    try {
+                        JSONObject jsonObj;
+                        JSONParser parser = new JSONParser();
+                        Object obj = parser.parse(strListArr);
+                        jsonObj = (JSONObject) obj;
+
+                        JSONArray arr = (JSONArray) jsonObj.get("friends");// new JSONArray();
+                        Iterator iter = arr.iterator();
+                        String cont;
+                        Contact contact;
+                        while (iter.hasNext()) {
+                            cont = (String) iter.next();
+                            contact = (Contact) JSONCoder.decode(cont, 2);
+                            contactArrayList.add(contact);
+                        }
+                        //System.out.println(arr.toString());
+                    } catch (Exception e) {
+                        System.out.println("public void getListContact()" + e.toString());
+                    }
+                    ;
+                    listener.handleEvent(contactArrayList);
+                }
+            }
+        };
+        //Создание потока
+        Thread myThready = new Thread(new Runnable()
+        {
+            public void run() //Этот метод будет выполняться в побочном потоке
+            {
+                subSystemMSG.requestUpdateContacts(reportListener);
+            }
+        });
+        myThready.start();	//Запуск потока
+    }
+
 
     //add 02.12
     @Override

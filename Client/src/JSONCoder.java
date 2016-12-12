@@ -1,7 +1,14 @@
+
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
 public class JSONCoder {
+
+
+    //внимание, изменить + не должны быть одинаковыми
+    static final String idStatus = "status";
+    static final String idCountOfMes = "countOfMes";
+
     public static Object decode(String string, int t) // t = 1 - message, t = 2 - contact
     {
         JSONParser parser = new JSONParser();
@@ -15,7 +22,8 @@ public class JSONCoder {
                 message.text = (String) jsonObj.get("text");
                 message.time = (String) jsonObj.get("time");
                 String a = (String) jsonObj.get("contact");
-                message.contact = (Contact) decode(a, Report.CONTACT);
+                if(a != null)
+                    message.contact = (Contact) decode(a, Report.CONTACT);
                 return message;
             }
             if (t == Report.CONTACT) {
@@ -23,6 +31,10 @@ public class JSONCoder {
                 contact.login = (String) jsonObj.get("login");
                 contact.name = (String) jsonObj.get("name");
                 contact.password = (String) jsonObj.get("password");
+                Long tem1 = (Long)jsonObj.get(idStatus);
+                Long tem2 = (Long)jsonObj.get(idCountOfMes);
+                contact.status = tem1.intValue();
+                contact.countOfMes = tem2.intValue();
                 return contact;
             }
         } catch (Exception e) {
@@ -71,6 +83,8 @@ public class JSONCoder {
         resultJson.put("login", contact.login);
         resultJson.put("name", contact.name);
         resultJson.put("password", contact.password);
+        resultJson.put(idStatus, contact.status);
+        resultJson.put(idCountOfMes,contact.countOfMes);
         return resultJson.toJSONString();
     }
     public static String encode(Report report)

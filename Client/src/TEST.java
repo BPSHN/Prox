@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by Александр on 31.10.2016.
  */
 public class TEST {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Model model = new Model();
 
@@ -85,7 +85,7 @@ public class TEST {
             model.addContact(c2);*/
 
             //тест отправки сообщения
-            /*DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+           /*DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date(System.currentTimeMillis());
             System.out.println(dateFormat.format(date));
             Contact c3 = new Contact();
@@ -95,34 +95,75 @@ public class TEST {
             });
             Message message = new Message();
             message.contact = c3;
-            message.text = "HELLO4!!!!";
+            message.text = "HELLO8!!!!";
             message.date = dateFormat.format(date);
             message.time = new SimpleDateFormat("HH:mm:ss").format(date);
             model.sendMessage(message);*/
 
-            /*
+
+/*
             //тест получения всего диалога
             Contact c5 = new Contact();
             c5.login = "Alex";
             model.regGetListDialogListener((ArrayList<Message> mes) ->{
                 System.out.println(mes.size());
             });
-            model.getListDialog(c5);*/
+            model.getListDialog(c5);
+            */
+
 
             //тест обновления диалога
-            Contact c5 = new Contact();
-            c5.login = "Tony";
+            /*Contact c5 = new Contact();
+            c5.login = "Alex";
             model.getUpdateDialog(c5, (ArrayList<Message> mes) ->{
                 System.out.println(mes.size());
+            });*/
+
+
+            model.getMyContact(new UniversalListenerWithObject() {
+                @Override
+                public void handlerEvent(int typeResponse, Object object) {
+                    System.out.println(typeResponse);
+                }
             });
 
-
-
         });
-        model.loginMe("Alex", "123");
+        model.loginMe("Tony", "123");
 
 
+       /* Thread.sleep(3000);
 
+        model.setMyStatus(0, new UniversalListener() {
+            @Override
+            public void handlerEvent(int typeResponse) {
+                System.out.println(typeResponse);
+            }
+        });
 
+        Thread.sleep(3000);
+
+        model.setMyStatus(1, new UniversalListener() {
+            @Override
+            public void handlerEvent(int typeResponse) {
+                System.out.println(typeResponse);
+            }
+        });
+
+        Thread.sleep(3000);
+
+        model.setMyStatus(2, new UniversalListener() {
+            @Override
+            public void handlerEvent(int typeResponse) {
+                System.out.println(typeResponse);
+            }
+        });
+        Thread.sleep(3000);
+
+        model.setMyStatus(3, new UniversalListener() {
+            @Override
+            public void handlerEvent(int typeResponse) {
+                System.out.println(typeResponse);
+            }
+        });*/
     }
 }
