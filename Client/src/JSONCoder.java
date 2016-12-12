@@ -104,6 +104,4 @@ public class JSONCoder {
         return resultJson.toJSONString();
     }
 
-
-
 }
