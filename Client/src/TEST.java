@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by Александр on 31.10.2016.
  */
 public class TEST {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Model model = new Model();
 
@@ -101,6 +101,7 @@ public class TEST {
             model.sendMessage(message);*/
 
 
+/*
             //тест получения всего диалога
             Contact c5 = new Contact();
             c5.login = "Alex";
@@ -108,6 +109,8 @@ public class TEST {
                 System.out.println(mes.size());
             });
             model.getListDialog(c5);
+            */
+
 
             //тест обновления диалога
             /*Contact c5 = new Contact();
@@ -117,12 +120,50 @@ public class TEST {
             });*/
 
 
+            model.getMyContact(new UniversalListenerWithObject() {
+                @Override
+                public void handlerEvent(int typeResponse, Object object) {
+                    System.out.println(typeResponse);
+                }
+            });
 
         });
-        model.loginMe("Misha", "123");
+        model.loginMe("Tony", "123");
 
 
+       /* Thread.sleep(3000);
 
+        model.setMyStatus(0, new UniversalListener() {
+            @Override
+            public void handlerEvent(int typeResponse) {
+                System.out.println(typeResponse);
+            }
+        });
 
+        Thread.sleep(3000);
+
+        model.setMyStatus(1, new UniversalListener() {
+            @Override
+            public void handlerEvent(int typeResponse) {
+                System.out.println(typeResponse);
+            }
+        });
+
+        Thread.sleep(3000);
+
+        model.setMyStatus(2, new UniversalListener() {
+            @Override
+            public void handlerEvent(int typeResponse) {
+                System.out.println(typeResponse);
+            }
+        });
+        Thread.sleep(3000);
+
+        model.setMyStatus(3, new UniversalListener() {
+            @Override
+            public void handlerEvent(int typeResponse) {
+                System.out.println(typeResponse);
+            }
+        });*/
     }
 }
